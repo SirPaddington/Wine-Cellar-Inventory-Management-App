@@ -24,13 +24,12 @@ Before cloning the repository on a new computer (e.g., your dad's laptop), you m
 1.  **Clone the Repository**
     Open your terminal (Command Prompt or PowerShell on Windows) and run:
     ```bash
-    git clone https://github.com/YourUsername/Wine-Storage.git
-    cd Wine-Storage
+    git clone https://github.com/SirPaddington/Wine-Cellar-Inventory-Management-App.git
+    cd Wine-Cellar-Inventory-Management-App
     ```
-    *(Note: Replace `YourUsername` with the actual GitHub username where this repo is hosted).*
 
 2.  **Install Dependencies**
-    In the terminal (inside the `Wine-Storage` folder), run:
+    In the terminal (inside the `Wine-Cellar-Inventory-Management-App` folder), run:
     ```bash
     npm install
     ```
