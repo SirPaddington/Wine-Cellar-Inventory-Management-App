@@ -3,7 +3,8 @@ import React, { useRef } from 'react';
 import { useInventoryStore } from '../../store/inventoryStore';
 import { useCellarStore } from '../../store/cellarStore';
 import { Button } from '../ui/Button';
-import { Download, Upload, FileJson } from 'lucide-react';
+import { Download, Upload, FileJson, FileSpreadsheet } from 'lucide-react';
+import { exportToExcel } from '../../utils/exportToExcel';
 
 export const DataManager: React.FC = () => {
     const inventoryStore = useInventoryStore();
@@ -33,6 +34,15 @@ export const DataManager: React.FC = () => {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    };
+
+    const handleExcelExport = () => {
+        exportToExcel({
+            wines: inventoryStore.wines,
+            bottles: inventoryStore.bottles,
+            locations: cellarStore.locations,
+            units: cellarStore.units
+        });
     };
 
     const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,13 +121,20 @@ export const DataManager: React.FC = () => {
                 </div>
             </div>
 
-            <div className="flex gap-4">
-                <Button onClick={handleExport} className="flex-1 justify-center">
-                    <Download size={18} className="mr-2" />
-                    Export Data
-                </Button>
+            <div className="space-y-4">
+                <div className="flex gap-4">
+                    <Button onClick={handleExport} className="flex-1 justify-center">
+                        <Download size={18} className="mr-2" />
+                        Export Data (JSON)
+                    </Button>
 
-                <div className="relative flex-1">
+                    <Button onClick={handleExcelExport} variant="secondary" className="flex-1 justify-center">
+                        <FileSpreadsheet size={18} className="mr-2" />
+                        Export to Excel
+                    </Button>
+                </div>
+
+                <div className="relative">
                     <input
                         type="file"
                         ref={fileInputRef}
@@ -136,7 +153,7 @@ export const DataManager: React.FC = () => {
                 </div>
             </div>
             <p className="text-xs text-slate-500 mt-3 text-center">
-                Exporting creates a JSON file. Importing will replace your current collection.
+                Export to JSON for backup or Excel for spreadsheet viewing. Importing will replace your current collection.
             </p>
         </div>
     );

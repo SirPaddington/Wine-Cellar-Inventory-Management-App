@@ -22,16 +22,16 @@ export const EditBottleLocationModal: React.FC<EditBottleLocationModalProps> = (
 
     const [selectedLocationId, setSelectedLocationId] = useState(bottle.locationId);
     const [selectedUnitId, setSelectedUnitId] = useState(bottle.unitId);
-    // For simplicity, we might just keep X/Y as is unless unit changes? 
-    // Or simpler: Just Location/Unit for now, and warn if position is invalid?
-    // Or better: Let's assume we are just fixing data.
-    // If unit changes, x/y might be invalid.
-    // Let's provide x/y inputs?
     const [x, setX] = useState(bottle.x);
     const [y, setY] = useState(bottle.y);
+    const [depth, setDepth] = useState(bottle.depth);
 
     // Filter units by location
     const filteredUnits = units.filter(u => u.locationId === selectedLocationId);
+
+    // Get current selected unit
+    const selectedUnit = units.find(u => u.id === selectedUnitId);
+    const maxDepth = selectedUnit ? selectedUnit.dimensions.depth - 1 : 0;
 
     // Initial unit selection sync
     useEffect(() => {
@@ -40,13 +40,29 @@ export const EditBottleLocationModal: React.FC<EditBottleLocationModalProps> = (
         }
     }, [selectedLocationId, filteredUnits, selectedUnitId]);
 
+    // Auto-reset depth when unit changes
+    useEffect(() => {
+        if (selectedUnit) {
+            const unitMaxDepth = selectedUnit.dimensions.depth - 1;
+            // If single-depth unit, reset to 0
+            if (selectedUnit.dimensions.depth === 1) {
+                setDepth(0);
+            }
+            // If current depth exceeds new unit's max depth, reset to max
+            else if (depth > unitMaxDepth) {
+                setDepth(unitMaxDepth);
+            }
+        }
+    }, [selectedUnitId, selectedUnit, depth]);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         updateBottle(bottle.id, {
             locationId: selectedLocationId,
             unitId: selectedUnitId,
             x: Number(x),
-            y: Number(y)
+            y: Number(y),
+            depth: Number(depth)
         });
         onSuccess();
     };
@@ -87,25 +103,45 @@ export const EditBottleLocationModal: React.FC<EditBottleLocationModalProps> = (
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Column (X)</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">
+                        Column {selectedUnit && `(1-${selectedUnit.dimensions.width})`}
+                    </label>
                     <input
                         type="number"
-                        min="0"
-                        value={x}
-                        onChange={(e) => setX(Number(e.target.value))}
+                        min="1"
+                        max={selectedUnit ? selectedUnit.dimensions.width : 1}
+                        value={x + 1}
+                        onChange={(e) => setX(Number(e.target.value) - 1)}
                         className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 px-3 py-2 text-sm"
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Row (Y)</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">
+                        Row {selectedUnit && `(1-${selectedUnit.dimensions.height})`}
+                    </label>
                     <input
                         type="number"
-                        min="0"
-                        value={y}
-                        onChange={(e) => setY(Number(e.target.value))}
+                        min="1"
+                        max={selectedUnit ? selectedUnit.dimensions.height : 1}
+                        value={y + 1}
+                        onChange={(e) => setY(Number(e.target.value) - 1)}
                         className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 px-3 py-2 text-sm"
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">
+                        Depth {selectedUnit && selectedUnit.dimensions.depth > 1 && `(1-${selectedUnit.dimensions.depth})`}
+                    </label>
+                    <input
+                        type="number"
+                        min="1"
+                        max={selectedUnit ? selectedUnit.dimensions.depth : 1}
+                        value={depth + 1}
+                        onChange={(e) => setDepth(Number(e.target.value) - 1)}
+                        disabled={maxDepth === 0}
+                        className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 px-3 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                 </div>
             </div>

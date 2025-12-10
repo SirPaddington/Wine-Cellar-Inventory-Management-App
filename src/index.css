@@ -2,10 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
-  overflow: hidden; /* Prevent scrolling for 3D view */
-  background-color: #0f172a; /* Slate 900 */
-  color: #f8fafc; /* Slate 50 */
+  overflow: hidden;
+  /* Prevent scrolling for 3D view */
+  background-color: #3a3a3a;
+  /* VSCode Dark Mode Grey */
+  color: #f8fafc;
+  /* Slate 50 */
+}
+
+a {
+  color: #4da6ff;
+  /* Lighter blue for links */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #c4a7ff;
+  /* Lavender for visited links */
 }

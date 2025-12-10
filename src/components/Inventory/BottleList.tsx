@@ -48,7 +48,7 @@ export const BottleList: React.FC<BottleListProps> = ({ wineId }) => {
                                 <div key={b.id} className="flex justify-between items-center text-sm p-3 bg-slate-900 rounded-lg border border-slate-800/50">
                                     <div className="text-slate-300">
                                         <div className="font-medium text-indigo-300">{getLocationName(b.locationId)}</div>
-                                        <div className="text-slate-500 text-xs">{getUnitName(b.unitId)} (Col: {b.x}, Row: {b.y})</div>
+                                        <div className="text-slate-500 text-xs">{getUnitName(b.unitId)} (Col: {b.x + 1}, Row: {b.y + 1}, Depth: {b.depth + 1})</div>
                                     </div>
                                     <div className="flex gap-2">
                                         <button
