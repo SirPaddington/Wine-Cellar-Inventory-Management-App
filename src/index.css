@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Prevent scrolling for 3D view */
+  background-color: #0f172a; /* Slate 900 */
+  color: #f8fafc; /* Slate 50 */
+}
