@@ -16,6 +16,7 @@ export const EditBottleLocationModal: React.FC<EditBottleLocationModalProps> = (
     const updateBottle = useInventoryStore((state) => state.updateBottle);
     const locations = useCellarStore((state) => state.locations);
     const units = useCellarStore((state) => state.units);
+    const bottles = useInventoryStore((state) => state.bottles);
     const getWine = useInventoryStore((state) => state.getWine);
 
     const wine = getWine(bottle.wineId);
@@ -25,6 +26,7 @@ export const EditBottleLocationModal: React.FC<EditBottleLocationModalProps> = (
     const [x, setX] = useState(bottle.x);
     const [y, setY] = useState(bottle.y);
     const [depth, setDepth] = useState(bottle.depth);
+    const [error, setError] = useState<string | null>(null);
 
     // Filter units by location
     const filteredUnits = units.filter(u => u.locationId === selectedLocationId);
@@ -57,6 +59,23 @@ export const EditBottleLocationModal: React.FC<EditBottleLocationModalProps> = (
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setError(null);
+
+        // Collision Detection
+        const isOccupied = bottles.some(b =>
+            b.id !== bottle.id && // Don't check against self
+            b.status === 'Stored' &&
+            b.unitId === selectedUnitId &&
+            b.x === Number(x) &&
+            b.y === Number(y) &&
+            b.depth === Number(depth)
+        );
+
+        if (isOccupied) {
+            setError('This position is already occupied by another bottle.');
+            return;
+        }
+
         updateBottle(bottle.id, {
             locationId: selectedLocationId,
             unitId: selectedUnitId,
@@ -73,6 +92,12 @@ export const EditBottleLocationModal: React.FC<EditBottleLocationModalProps> = (
                 <p className="text-sm text-slate-400">Wine</p>
                 <p className="font-medium text-slate-200">{wine?.producer} {wine?.name}</p>
             </div>
+
+            {error && (
+                <div className="p-3 bg-red-900/50 border border-red-800 rounded-lg text-red-200 text-sm">
+                    {error}
+                </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
                 <div>

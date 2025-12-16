@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCellarStore } from '../store/cellarStore';
-import { Plus, Edit2, Box, Warehouse, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Plus, Edit2, Box, Warehouse, Trash2, Cuboid } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Modal } from '../components/ui/Modal';
@@ -15,8 +16,8 @@ export const ConfigurationPage: React.FC = () => {
     const locations = useCellarStore(state => state.locations);
     const units = useCellarStore(state => state.units);
     const deleteLocation = useCellarStore(state => state.deleteLocation);
-    const addUnit = useCellarStore(state => state.addUnit);
-    const deleteUnit = useCellarStore(state => state.deleteUnit); // Need delete unit too
+    // const addUnit = useCellarStore(state => state.addUnit); // Removed unused variable
+    const deleteUnit = useCellarStore(state => state.deleteUnit);
 
     // UI State
     const [selectedLocationId, setSelectedLocationId] = useState<string | null>(locations[0]?.id || null);
@@ -26,6 +27,9 @@ export const ConfigurationPage: React.FC = () => {
     const [editingLocation, setEditingLocation] = useState<Location | null>(null);
 
     const [isAddUnitOpen, setIsAddUnitOpen] = useState(false);
+
+
+
     const [editingUnit, setEditingUnit] = useState<StorageUnit | null>(null);
 
     const handleDeleteLocation = (e: React.MouseEvent, id: string) => {
@@ -40,24 +44,6 @@ export const ConfigurationPage: React.FC = () => {
         if (confirm("Delete this unit? All bottles in it will be removed.")) {
             deleteUnit(id);
         }
-    };
-
-    const handleAddCrate = (size: 12 | 6) => {
-        const timestamp = Date.now();
-        const shortId = Math.random().toString(36).substr(2, 5);
-        // Dimensions: Width (Cols), Height (Rows)
-        const dimensions = size === 12
-            ? { width: 4, height: 3, depth: 1 }
-            : { width: 3, height: 2, depth: 1 };
-
-        const unit: StorageUnit = {
-            id: `unit-crate-${timestamp}-${shortId}`,
-            locationId: selectedLocationId!,
-            name: `${size === 12 ? 'Full' : 'Half'} Case ${shortId}`,
-            type: 'crate',
-            dimensions
-        };
-        addUnit(unit);
     };
 
     const closeLocationModal = () => {
@@ -77,6 +63,12 @@ export const ConfigurationPage: React.FC = () => {
             <div className="text-center">
                 <h1 className="text-3xl font-bold text-white mb-2">Cellar Configuration</h1>
                 <p className="text-neutral-400">Manage your locations and storage units.</p>
+            </div>
+
+            {/* Data Management Section */}
+            <div className="bg-neutral-900/50 p-6 rounded-xl border border-neutral-800">
+                <h2 className="text-xl font-semibold text-slate-200 mb-4">Data Management</h2>
+                <DataManager />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -113,6 +105,14 @@ export const ConfigurationPage: React.FC = () => {
                                     </div>
 
                                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Link
+                                            to={`/cellar?locationId=${location.id}`}
+                                            className="p-1.5 text-slate-500 hover:text-indigo-400 transition-colors"
+                                            onClick={(e) => e.stopPropagation()} // Prevent card click
+                                            title="View in 3D Cellar"
+                                        >
+                                            <Cuboid size={16} />
+                                        </Link>
                                         <button
                                             className="p-1.5 text-slate-500 hover:text-white transition-colors"
                                             onClick={(e) => { e.stopPropagation(); setEditingLocation(location); }}
@@ -132,10 +132,6 @@ export const ConfigurationPage: React.FC = () => {
                             </div>
                         ))}
                     </div>
-
-                    <div className="pt-6">
-                        <DataManager />
-                    </div>
                 </div>
 
                 {/* Storage Units Main View */}
@@ -144,9 +140,9 @@ export const ConfigurationPage: React.FC = () => {
                         <h2 className="text-xl font-semibold text-slate-200">Storage Units</h2>
                         {selectedLocationId && (
                             <div className="flex gap-2">
-                                <Button size="sm" variant="secondary" className="text-xs" onClick={() => handleAddCrate(12)}>+ Full Case</Button>
-                                <Button size="sm" variant="secondary" className="text-xs" onClick={() => handleAddCrate(6)}>+ Half Case</Button>
-                                <Button size="sm" onClick={() => setIsAddUnitOpen(true)}><Plus size={16} className="mr-2" /> Add Unit</Button>
+                                <Button size="sm" onClick={() => {
+                                    setIsAddUnitOpen(true);
+                                }}><Plus size={16} className="mr-2" /> Add Unit</Button>
                             </div>
                         )}
                     </div>
@@ -216,8 +212,8 @@ export const ConfigurationPage: React.FC = () => {
                             ))}
                         </div>
                     )}
-                </div>
-            </div>
+                </div >
+            </div >
 
             {/* Location Modal */}
             <Modal

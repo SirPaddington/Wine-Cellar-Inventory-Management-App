@@ -7,8 +7,7 @@ body,
 #root {
   height: 100%;
   margin: 0;
-  overflow: hidden;
-  /* Prevent scrolling for 3D view */
+  /* overflow: hidden; Removed to allow scrolling on other pages */
   background-color: #3a3a3a;
   /* VSCode Dark Mode Grey */
   color: #f8fafc;

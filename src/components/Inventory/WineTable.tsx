@@ -97,7 +97,8 @@ export const WineTable: React.FC = () => {
                     <table className="w-full text-left text-sm text-slate-400">
                         <thead className="bg-slate-950 text-slate-200 uppercase font-medium">
                             <tr>
-                                <th className="px-6 py-4">Name</th>
+                                <th className="px-6 py-4">Winery</th>
+                                <th className="px-6 py-4">Varietal</th>
                                 <th className="px-6 py-4">Vintage</th>
                                 <th className="px-6 py-4">Type</th>
                                 <th className="px-6 py-4">Region</th>
@@ -109,7 +110,7 @@ export const WineTable: React.FC = () => {
                         <tbody className="divide-y divide-slate-800">
                             {filteredWines.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
+                                    <td colSpan={8} className="px-6 py-12 text-center text-slate-500">
                                         No wines found. Add your first bottle!
                                     </td>
                                 </tr>
@@ -119,7 +120,9 @@ export const WineTable: React.FC = () => {
                                         <td className="px-6 py-4 font-medium text-slate-100">
                                             <div>{wine.producer}</div>
                                             {wine.vineyard && <div className="text-xs text-indigo-400 font-normal">{wine.vineyard}</div>}
-                                            <div className="text-slate-500 font-normal">{wine.name}</div>
+                                        </td>
+                                        <td className="px-6 py-4 text-slate-300">
+                                            {wine.name}
                                         </td>
                                         <td className="px-6 py-4">{wine.year}</td>
                                         <td className="px-6 py-4">

@@ -89,8 +89,14 @@ export const AddWineForm: React.FC<AddWineFormProps> = ({ initialData, onSuccess
         setStockError(null);
         if (!formData.producer || !formData.name) return;
 
+        // Helper: Extract varietals from the name input
+        const varietalList = formData.name.split(',').map(v => v.trim()).filter(v => v.length > 0);
+
         if (initialData) {
-            updateWine(initialData.id, formData);
+            updateWine(initialData.id, {
+                ...formData,
+                varietal: varietalList
+            });
             onSuccess();
         } else {
             // New Wine
@@ -138,7 +144,7 @@ export const AddWineForm: React.FC<AddWineFormProps> = ({ initialData, onSuccess
                 name: formData.name!,
                 year: Number(formData.year),
                 type: formData.type as WineType,
-                varietal: [],
+                varietal: varietalList,
                 country: formData.country || 'Unknown',
                 region: formData.region || 'Unknown',
                 rating: Number(formData.rating),
@@ -182,12 +188,12 @@ export const AddWineForm: React.FC<AddWineFormProps> = ({ initialData, onSuccess
                 </div>
 
                 <Input
-                    label="Name / Varietal"
+                    label="Varietal(s)"
                     id="name"
                     name="name"
                     value={formData.name || ''}
                     onChange={handleChange}
-                    placeholder="e.g. Cabernet Sauvignon"
+                    placeholder="e.g. Cabernet Sauvignon, Merlot"
                     required
                 />
 

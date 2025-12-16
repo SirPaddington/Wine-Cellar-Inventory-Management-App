@@ -27,9 +27,10 @@ export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) =
             {/* Sidebar - Collapsible */}
             <aside
                 className={clsx(
-                    "flex-shrink-0 bg-neutral-950 border-r border-neutral-800 flex flex-col transition-all duration-300 ease-in-out overflow-hidden h-full",
-                    isMenuOpen ? "w-64 opacity-100" : "w-0 opacity-0"
+                    "flex-shrink-0 bg-neutral-950 flex flex-col transition-all duration-300 ease-in-out overflow-hidden h-full",
+                    isMenuOpen ? "opacity-100 border-r border-neutral-800" : "opacity-0 border-none"
                 )}
+                style={{ width: isMenuOpen ? '16rem' : '0px' }}
             >
                 <div className="w-64 flex flex-col h-full p-6 pt-20">
                     <div className="mb-8">
@@ -68,7 +69,7 @@ export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) =
                     </button>
                 </div>
 
-                <div className="h-full w-full">
+                <div className="min-h-full w-full">
                     {children}
                 </div>
             </main>

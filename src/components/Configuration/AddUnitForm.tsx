@@ -41,8 +41,13 @@ export const AddUnitForm: React.FC<AddUnitFormProps> = ({ locationId, initialDat
                 dimensions,
             });
         } else {
+            // Robust UUID generation
+            const id = (typeof self.crypto !== 'undefined' && self.crypto.randomUUID)
+                ? self.crypto.randomUUID()
+                : `unit-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
             addUnit({
-                id: self.crypto.randomUUID(),
+                id,
                 locationId,
                 name: formData.name,
                 type: formData.type,
@@ -73,9 +78,37 @@ export const AddUnitForm: React.FC<AddUnitFormProps> = ({ locationId, initialDat
                 >
                     <option value="grid">Grid (Standard Rack)</option>
                     <option value="list">List (Unstructured)</option>
-                    <option value="vertical_drawer">Vertical Drawer/Crate</option>
+                    <option value="crate">Case</option>
+                    <option value="vertical_drawer">Vertical Drawer</option>
                 </select>
             </div>
+
+            {(formData.type === 'crate' || formData.type === 'vertical_drawer') && (
+                <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-800">
+                    <label className="block text-xs font-medium text-slate-400 mb-3">Size Preset</label>
+                    <div className="flex items-center gap-4">
+                        <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, width: 4, height: 3, depth: 1 })}
+                            className="flex-1 py-2 px-4 rounded-lg bg-slate-800 hover:bg-indigo-900/30 text-sm text-slate-200 transition-all border border-slate-700 hover:border-indigo-500/50 shadow-sm"
+                        >
+                            <span className="block font-medium">Full Case</span>
+                            <span className="text-xs text-slate-400">12 Bottles (4x3)</span>
+                        </button>
+
+                        <div className="h-8 w-px bg-slate-700 mx-2" />
+
+                        <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, width: 3, height: 2, depth: 1 })}
+                            className="flex-1 py-2 px-4 rounded-lg bg-slate-800 hover:bg-indigo-900/30 text-sm text-slate-200 transition-all border border-slate-700 hover:border-indigo-500/50 shadow-sm"
+                        >
+                            <span className="block font-medium">Half Case</span>
+                            <span className="text-xs text-slate-400">6 Bottles (3x2)</span>
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <div className="grid grid-cols-3 gap-4">
                 <Input

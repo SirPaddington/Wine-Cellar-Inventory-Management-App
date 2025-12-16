@@ -12,7 +12,9 @@ interface RackVisualizerProps {
 
 export const RackVisualizer: React.FC<RackVisualizerProps> = ({ unit, position, onBottleClick }) => {
     // Generate grid slots
-    const { width, height, depth } = unit.dimensions;
+    const width = unit.dimensions?.width || 1;
+    const height = unit.dimensions?.height || 1;
+    const depth = unit.dimensions?.depth || 1;
     const bottles = useInventoryStore(state => state.bottles);
 
     // Simple rack geometry generation

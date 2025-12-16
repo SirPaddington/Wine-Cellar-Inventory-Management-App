@@ -40,10 +40,35 @@ Before cloning the repository on a new computer (e.g., your dad's laptop), you m
     ```bash
     npm run dev
     ```
+    You will see output indicating the server is running.
 
 4.  **Open in Browser**
     The terminal will show a link, usually `http://localhost:5173`.
-    *   Ctrl + Click the link or type it into your browser address bar.
+    *   **Click the link** (Hold Ctrl + Click) or copy and paste it into your web browser (Chrome, Edge, Firefox, etc.).
+    *   To **STOP** the application, go back to the terminal and press `Ctrl + C`.
+
+---
+
+## Data Persistence & Backup (IMPORTANT)
+
+This application uses **Browser Local Storage** to save your inventory and settings. This means:
+*   **Data is stored on your specific computer and browser.** It is NOT saved to the cloud.
+*   **Clearing your browser history/cache can delete your data.**
+*   **Using a different browser (e.g., switching from Chrome to Edge) will result in an empty inventory.**
+
+### How to Backup & Move Data
+To prevent data loss or to move your specific wine collection to another computer, you must use the **Backup** feature.
+
+1.  Navigate to the **Configuration** page in the app.
+2.  Locate the **Data Backup** section.
+3.  **To Backup:** Click **Export Data (JSON)**. This downloads a file (e.g., `wine-storage-backup-date.json`) to your computer. Save this file safely!
+4.  **To Restore/Move:**
+    *   Click **Import Data**.
+    *   Select your saved `.json` backup file.
+    *   Confirm the prompt to overwrite the current data.
+
+> [!WARNING]
+> **Excel Export Note**: The "Export to Excel" button is for reporting and viewing purposes only. You **cannot** restore your inventory from an Excel file. Always keep a `.json` backup.
 
 ---
 
@@ -51,12 +76,8 @@ Before cloning the repository on a new computer (e.g., your dad's laptop), you m
 *   **Inventory**: Track red, white, rose, sparkling, and more. Filter by vintage, price, and region.
 *   **3D Cellar**: Interactive 3D visualization of your racks. Click bottles to edit, move, or consume them.
 *   **Configuration**: Customize your storage units (racks, lockers, fridges) and their dimensions.
-*   **Data Backup**:
-    *   Go to **Configuration** page.
-    *   **Export**: Support moving data between computers.
-    *   **Import**: Restore data from a previous backup.
 *   **Offline Mode**: Fully functional without an internet connection once the server is running.
 
 ## Troubleshooting
 *   **"command not found"**: Ensure Node.js and Git are installed and you restarted your terminal.
-*   **Data missing on new computer**: Data is stored in the browser. Use the **Export/Import** feature in Configuration to migrate your collection.
+*   **Data missing on new computer**: As noted above, data lives in the browser. Use the **Export/Import (JSON)** feature in Configuration to transfer your collection.

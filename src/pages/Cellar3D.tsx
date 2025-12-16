@@ -2,6 +2,7 @@ import React, { useState, Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import { useCellarStore } from '../store/cellarStore';
+import { useEffect } from 'react';
 import { RackVisualizer } from '../components/Cellar3D/RackVisualizer';
 import { CrateVisualizer } from '../components/Cellar3D/CrateVisualizer';
 import { Warehouse, Wine } from 'lucide-react';
@@ -15,10 +16,31 @@ import { EditBottleLocationModal } from '../components/Inventory/EditBottleLocat
 import { ConsumeBottleModal } from '../components/Inventory/ConsumeBottleModal';
 
 
+import { useSearchParams } from 'react-router-dom';
+
 const Cellar3D: React.FC = () => {
     const locations = useCellarStore((state) => state.locations);
     const units = useCellarStore((state) => state.units);
-    const [selectedLocationId, setSelectedLocationId] = useState<string>(locations[0]?.id || '');
+    const [searchParams] = useSearchParams();
+
+    // Initialize with URL param if valid, otherwise default to first location
+    const [selectedLocationId, setSelectedLocationId] = useState<string>(
+        () => {
+            const paramId = searchParams.get('locationId');
+            if (paramId && locations.find(l => l.id === paramId)) {
+                return paramId;
+            }
+            return locations[0]?.id || '';
+        }
+    );
+
+    // Lock scrolling while in 3D view
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = ''; // Restore default
+        };
+    }, []);
 
     // Interaction States
     const [selectedBottleId, setSelectedBottleId] = useState<string | null>(null);
@@ -105,6 +127,34 @@ const Cellar3D: React.FC = () => {
                     </div>
                 </div>
 
+                {/* Interaction Guide */}
+                <div
+                    className="absolute top-4 right-4 z-10 pointer-events-none"
+                    style={{ top: '1rem', right: '1rem', bottom: 'auto', left: 'auto' }}
+                >
+                    <div className="bg-slate-950/80 backdrop-blur p-4 rounded-xl border border-slate-800 shadow-xl pointer-events-auto max-w-xs">
+                        <h3 className="text-sm font-bold text-white mb-2">Controls</h3>
+                        <ul className="text-xs text-slate-400 gap-1 flex flex-col" style={{ padding: 0, margin: 0, listStyle: 'none' }}>
+                            <li className="flex items-start">
+                                <span className="mr-1">•</span>
+                                <span><span className="text-slate-200">Left Click & Drag</span> to Rotate</span>
+                            </li>
+                            <li className="flex items-start">
+                                <span className="mr-1">•</span>
+                                <span><span className="text-slate-200">Right Click & Drag</span> to Pan</span>
+                            </li>
+                            <li className="flex items-start">
+                                <span className="mr-1">•</span>
+                                <span><span className="text-slate-200">Scroll</span> to Zoom</span>
+                            </li>
+                            <li className="flex items-start">
+                                <span className="mr-1">•</span>
+                                <span><span className="text-slate-200">Click Bottle</span> to View/Edit</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 {/* 3D Scene */}
                 <Canvas shadows camera={{ position: [4, 4, 8], fov: 50 }} className="bg-slate-900">
                     <Suspense fallback={null}>
@@ -119,7 +169,10 @@ const Cellar3D: React.FC = () => {
                                     pos = [0, index * 2.2, 0];
                                 }
 
+                                console.log('[Cellar3D] Rendering item:', index, unit.name, unit.type, pos);
+
                                 if (unit.type === 'crate') {
+                                    console.log('[Cellar3D] Rendering CRATE visualizer');
                                     return (
                                         <CrateVisualizer
                                             key={unit.id}
@@ -130,6 +183,7 @@ const Cellar3D: React.FC = () => {
                                     );
                                 }
 
+                                // Default to RackVisualizer for 'grid', 'vertical_drawer', 'list', or fallback
                                 return (
                                     <RackVisualizer
                                         key={unit.id}

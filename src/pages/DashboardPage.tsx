@@ -66,9 +66,18 @@ export const DashboardPage: React.FC = () => {
         const varietalCounts: Record<string, number> = {};
         storedBottles.forEach(b => {
             const wine = wines.find(w => w.id === b.wineId);
-            if (wine && wine.varietal) {
-                wine.varietal.forEach(v => {
-                    varietalCounts[v] = (varietalCounts[v] || 0) + 1;
+            if (wine) {
+                // Use explicit varietal list if available, otherwise fallback to name (legacy/simple mode)
+                const sources = (wine.varietal && wine.varietal.length > 0)
+                    ? wine.varietal
+                    : [wine.name];
+
+                sources.forEach(v => {
+                    // Clean up string just in case
+                    const cleanV = v.trim();
+                    if (cleanV) {
+                        varietalCounts[cleanV] = (varietalCounts[cleanV] || 0) + 1;
+                    }
                 });
             }
         });
@@ -106,7 +115,7 @@ export const DashboardPage: React.FC = () => {
     }, [wines, bottles, locations, units]);
 
     return (
-        <div className="p-8 max-w-7xl mx-auto space-y-8 pt-20 lg:pt-8">
+        <div className="p-8 pt-20 lg:pt-8 space-y-8">
             <div className="text-center mb-0">
                 <h1 className="text-3xl font-bold text-white mb-2">Cellar Dashboard</h1>
                 <p className="text-neutral-400">Overview of your wine collection.</p>
