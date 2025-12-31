@@ -14,18 +14,26 @@ export const BottleVisualizer: React.FC<BottleVisualizerProps> = ({ bottle, posi
     const [hovered, setHovered] = useState(false);
     const [clicked, setClicked] = useState(false);
 
+    const wineType = wine?.type || 'Red';
+
     // Determine color based on wine type
+    // Updated colors for better realism and "fun" sparkling look
     const colorMap: Record<string, string> = {
         'Red': '#722F37', // Merlot
-        'White': '#F1F285', // Pale yellow
-        'Rosé': '#FFC0CB',
-        'Sparkling': '#F1F285',
+        'White': '#F9E8C0', // Chardonnay/Light Yellow
+        'Rosé': '#fd928fff', // Provence Rosé
+        'Sparkling': '#F7E7CE', // Champagne body
         'Dessert': '#DAA520', // Golden
         'Fortified': '#521820', // Port
     };
 
-    const glassColor = clicked ? '#00ff00' : '#1f2937'; // Green flip on click
-    const liquidColor = clicked ? '#00ff00' : (colorMap[wine?.type || 'Red'] || '#722F37');
+    const isSparkling = wineType === 'Sparkling';
+
+    // Sparkling wines get a Gold foil neck (#FFD700)
+    // Others get standard dark glass neck (#1f2937)
+    const glassColor = clicked ? '#00ff00' : (isSparkling ? '#FFD700' : '#1f2937');
+
+    const liquidColor = clicked ? '#00ff00' : (colorMap[wineType] || '#722F37');
 
     const handleClick = (e: any) => {
         e.stopPropagation();
@@ -71,7 +79,11 @@ export const BottleVisualizer: React.FC<BottleVisualizerProps> = ({ bottle, posi
                     onPointerOut={(e) => { e.stopPropagation(); setHovered(false); document.body.style.cursor = 'auto'; }}
                 >
                     <cylinderGeometry args={[0.038, 0.038, 0.22, 16]} />
-                    <meshStandardMaterial color={liquidColor} roughness={0.2} metalness={0.2} />
+                    <meshStandardMaterial
+                        color={liquidColor}
+                        roughness={isSparkling ? 0.1 : 0.2}
+                        metalness={isSparkling ? 0.4 : 0.2}
+                    />
                 </mesh>
 
                 {/* Neck */}
@@ -82,7 +94,11 @@ export const BottleVisualizer: React.FC<BottleVisualizerProps> = ({ bottle, posi
                     onPointerOut={(e) => { e.stopPropagation(); setHovered(false); document.body.style.cursor = 'auto'; }}
                 >
                     <cylinderGeometry args={[0.012, 0.035, 0.08, 16]} />
-                    <meshStandardMaterial color={glassColor} roughness={0.2} metalness={0.8} />
+                    <meshStandardMaterial
+                        color={glassColor}
+                        roughness={0.2}
+                        metalness={isSparkling ? 0.9 : 0.8}
+                    />
                 </mesh>
 
                 {/* Cork/Cap */}
@@ -93,7 +109,7 @@ export const BottleVisualizer: React.FC<BottleVisualizerProps> = ({ bottle, posi
                     onPointerOut={(e) => { e.stopPropagation(); setHovered(false); document.body.style.cursor = 'auto'; }}
                 >
                     <cylinderGeometry args={[0.013, 0.013, 0.02, 16]} />
-                    <meshStandardMaterial color="#8a1c1c" />
+                    <meshStandardMaterial color={isSparkling ? "#DAA520" : "#8a1c1c"} />
                 </mesh>
             </group>
         </group>

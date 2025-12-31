@@ -47,7 +47,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
                 {/* Panel */}
                 <div
                     className={clsx(
-                        "relative w-full transform rounded-2xl bg-neutral-900 border border-slate-700 shadow-2xl transition-all z-[1001] max-h-[90vh] flex flex-col pointer-events-auto",
+                        "relative w-full transform rounded-2xl bg-neutral-900 border border-slate-700 shadow-2xl transition-all z-[1001] max-h-[95vh] flex flex-col pointer-events-auto",
                         sizeClasses[size]
                     )}
                     style={{ backgroundColor: '#3a3a3a' }} // Force opaque neutral-900
@@ -56,17 +56,17 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
                     aria-labelledby="modal-title"
                 >
                     <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900 rounded-t-2xl flex-shrink-0">
-                        <h3 id="modal-title" className="text-lg font-semibold text-white">{title}</h3>
+                        <h3 id="modal-title" className="text-xl font-semibold text-white">{title}</h3>
                         <button
                             onClick={onClose}
                             className="text-slate-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg p-1"
                             aria-label="Close modal"
                         >
-                            <X size={20} />
+                            <X size={24} />
                         </button>
                     </div>
                     {/* Content Area - Scrollable */}
-                    <div className="p-6 overflow-y-auto custom-scrollbar">
+                    <div className="p-6 overflow-y-auto custom-scrollbar text-lg">
                         {children}
                     </div>
                 </div>

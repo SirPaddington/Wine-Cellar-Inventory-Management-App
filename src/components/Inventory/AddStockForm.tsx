@@ -108,9 +108,9 @@ export const AddStockForm: React.FC<AddStockFormProps> = ({ wineId, onSuccess, o
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Location</label>
+                <label className="block text-lg font-medium text-slate-300 mb-1">Location</label>
                 <select
-                    className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                    className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                     value={selectedLocationId}
                     onChange={(e) => { setSelectedLocationId(e.target.value); setSelectedUnitId(''); }}
                 >
@@ -119,9 +119,9 @@ export const AddStockForm: React.FC<AddStockFormProps> = ({ wineId, onSuccess, o
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Storage Unit</label>
+                <label className="block text-lg font-medium text-slate-300 mb-1">Storage Unit</label>
                 <select
-                    className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                    className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                     value={selectedUnitId}
                     onChange={(e) => setSelectedUnitId(e.target.value)}
                     disabled={!selectedLocationId}
@@ -139,7 +139,7 @@ export const AddStockForm: React.FC<AddStockFormProps> = ({ wineId, onSuccess, o
             />
 
             {error && (
-                <div className="p-3 bg-red-900/20 border border-red-800 rounded-lg text-red-200 text-sm">
+                <div className="p-3 bg-red-900/20 border border-red-800 rounded-lg text-red-200 text-base">
                     {error}
                 </div>
             )}

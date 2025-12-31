@@ -220,6 +220,7 @@ export const ConfigurationPage: React.FC = () => {
                 isOpen={isAddLocationOpen || !!editingLocation}
                 onClose={closeLocationModal}
                 title={editingLocation ? "Edit Location" : "Add Location"}
+                size="lg"
             >
                 <AddLocationForm
                     initialData={editingLocation || undefined}

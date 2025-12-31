@@ -69,12 +69,12 @@ export const AddUnitForm: React.FC<AddUnitFormProps> = ({ locationId, initialDat
             />
 
             <div>
-                <label htmlFor="unit-type" className="block text-sm font-medium text-slate-300 mb-1">Type</label>
+                <label htmlFor="unit-type" className="block text-lg font-medium text-slate-300 mb-1">Type</label>
                 <select
                     id="unit-type"
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as StorageUnitType })}
-                    className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                    className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                 >
                     <option value="grid">Grid (Standard Rack)</option>
                     <option value="list">List (Unstructured)</option>
@@ -85,15 +85,15 @@ export const AddUnitForm: React.FC<AddUnitFormProps> = ({ locationId, initialDat
 
             {(formData.type === 'crate' || formData.type === 'vertical_drawer') && (
                 <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-800">
-                    <label className="block text-xs font-medium text-slate-400 mb-3">Size Preset</label>
+                    <label className="block text-sm font-medium text-slate-400 mb-3">Size Preset</label>
                     <div className="flex items-center gap-4">
                         <button
                             type="button"
                             onClick={() => setFormData({ ...formData, width: 4, height: 3, depth: 1 })}
-                            className="flex-1 py-2 px-4 rounded-lg bg-slate-800 hover:bg-indigo-900/30 text-sm text-slate-200 transition-all border border-slate-700 hover:border-indigo-500/50 shadow-sm"
+                            className="flex-1 py-2 px-4 rounded-lg bg-slate-800 hover:bg-indigo-900/30 text-base text-slate-200 transition-all border border-slate-700 hover:border-indigo-500/50 shadow-sm"
                         >
                             <span className="block font-medium">Full Case</span>
-                            <span className="text-xs text-slate-400">12 Bottles (4x3)</span>
+                            <span className="text-sm text-slate-400">12 Bottles (4x3)</span>
                         </button>
 
                         <div className="h-8 w-px bg-slate-700 mx-2" />
@@ -101,10 +101,10 @@ export const AddUnitForm: React.FC<AddUnitFormProps> = ({ locationId, initialDat
                         <button
                             type="button"
                             onClick={() => setFormData({ ...formData, width: 3, height: 2, depth: 1 })}
-                            className="flex-1 py-2 px-4 rounded-lg bg-slate-800 hover:bg-indigo-900/30 text-sm text-slate-200 transition-all border border-slate-700 hover:border-indigo-500/50 shadow-sm"
+                            className="flex-1 py-2 px-4 rounded-lg bg-slate-800 hover:bg-indigo-900/30 text-base text-slate-200 transition-all border border-slate-700 hover:border-indigo-500/50 shadow-sm"
                         >
                             <span className="block font-medium">Half Case</span>
-                            <span className="text-xs text-slate-400">6 Bottles (3x2)</span>
+                            <span className="text-sm text-slate-400">6 Bottles (3x2)</span>
                         </button>
                     </div>
                 </div>

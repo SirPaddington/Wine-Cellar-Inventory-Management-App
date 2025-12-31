@@ -51,7 +51,7 @@ export const ConsumeBottleModal: React.FC<ConsumeBottleModalProps> = ({ wineId, 
 
             <div className="max-h-48 overflow-y-auto space-y-2 pr-2 border border-slate-800 rounded-lg p-2 bg-slate-950/50">
                 {bottles.length === 0 ? (
-                    <p className="text-sm text-yellow-500">No bottles currently in stock.</p>
+                    <p className="text-lg text-yellow-500">No bottles currently in stock.</p>
                 ) : (
                     bottles.map(bottle => (
                         <div
@@ -64,11 +64,11 @@ export const ConsumeBottleModal: React.FC<ConsumeBottleModalProps> = ({ wineId, 
                                     : "bg-slate-900 border-slate-800 hover:border-slate-700"
                             )}
                         >
-                            <div className="flex flex-col text-sm">
+                            <div className="flex flex-col text-lg">
                                 <span className="text-slate-200 font-medium">{getLocationName(bottle.locationId)}</span>
-                                <span className="text-slate-500 text-xs">{getUnitName(bottle.unitId)} — Slot {bottle.x},{bottle.y}</span>
+                                <span className="text-slate-500 text-base">{getUnitName(bottle.unitId)} — Slot {bottle.x},{bottle.y}</span>
                             </div>
-                            <div className="text-xs text-slate-500">
+                            <div className="text-sm text-slate-500">
                                 Added {new Date(bottle.dateAdded).toLocaleDateString()}
                             </div>
                         </div>
@@ -78,23 +78,23 @@ export const ConsumeBottleModal: React.FC<ConsumeBottleModalProps> = ({ wineId, 
 
             <div className="space-y-3 pt-2">
                 <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Consumption Rating (0-100)</label>
+                    <label className="block text-lg font-medium text-slate-300 mb-1">Consumption Rating (0-100)</label>
                     <input
                         type="number"
                         min="0" max="100"
                         value={rating}
                         onChange={(e) => setRating(Number(e.target.value))}
-                        className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                        className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                         placeholder="Optional rating"
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-1">Tasting Notes</label>
+                    <label className="block text-lg font-medium text-slate-300 mb-1">Tasting Notes</label>
                     <textarea
                         rows={2}
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
-                        className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                        className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                         placeholder="How was it?"
                     />
                 </div>

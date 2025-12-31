@@ -208,13 +208,13 @@ export const AddWineForm: React.FC<AddWineFormProps> = ({ initialData, onSuccess
                         required
                     />
                     <div>
-                        <label htmlFor="type" className="block text-sm font-medium text-slate-300 mb-1">Type</label>
+                        <label htmlFor="type" className="block text-lg font-medium text-slate-300 mb-1">Type</label>
                         <select
                             id="type"
                             name="type"
                             value={formData.type}
                             onChange={handleChange}
-                            className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                            className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                         >
                             {wineTypes.map(t => <option key={t} value={t}>{t}</option>)}
                         </select>
@@ -249,14 +249,14 @@ export const AddWineForm: React.FC<AddWineFormProps> = ({ initialData, onSuccess
                 </div>
 
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-slate-300 mb-1">Notes</label>
+                    <label htmlFor="description" className="block text-lg font-medium text-slate-300 mb-1">Notes</label>
                     <textarea
                         id="description"
                         name="description"
                         rows={3}
                         value={formData.description || ''}
                         onChange={handleChange}
-                        className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                        className="block w-full rounded-lg bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                     />
                 </div>
 
@@ -271,21 +271,21 @@ export const AddWineForm: React.FC<AddWineFormProps> = ({ initialData, onSuccess
                                 onChange={(e) => setAddStock(e.target.checked)}
                                 className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
                             />
-                            <label htmlFor="addStock" className="text-sm font-medium text-slate-200 select-none cursor-pointer">
+                            <label htmlFor="addStock" className="text-lg font-medium text-slate-200 select-none cursor-pointer">
                                 Add bottles to inventory now?
                             </label>
                         </div>
 
                         {addStock && (
                             <div className="p-4 bg-slate-900/50 rounded-lg border border-slate-800 space-y-4">
-                                <h4 className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                                <h4 className="text-base font-semibold text-slate-300 flex items-center gap-2">
                                     <Plus size={16} className="text-indigo-400" /> Initial Inventory
                                 </h4>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-400 mb-1">Location</label>
+                                    <label className="block text-lg font-medium text-slate-400 mb-1">Location</label>
                                     <select
-                                        className="block w-full rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                                        className="block w-full rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                                         value={selectedLocationId}
                                         onChange={(e) => { setSelectedLocationId(e.target.value); setSelectedUnitId(''); }}
                                     >
@@ -294,9 +294,9 @@ export const AddWineForm: React.FC<AddWineFormProps> = ({ initialData, onSuccess
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-400 mb-1">Storage Unit</label>
+                                    <label className="block text-lg font-medium text-slate-400 mb-1">Storage Unit</label>
                                     <select
-                                        className="block w-full rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2"
+                                        className="block w-full rounded-lg bg-slate-950 border border-slate-700 text-slate-200 focus:border-indigo-500 focus:ring-indigo-500 text-lg px-3 py-2"
                                         value={selectedUnitId}
                                         onChange={(e) => setSelectedUnitId(e.target.value)}
                                         disabled={!selectedLocationId}
