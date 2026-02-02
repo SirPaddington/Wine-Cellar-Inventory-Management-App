@@ -47,6 +47,7 @@ const Cellar3D: React.FC = () => {
     const [editingWineId, setEditingWineId] = useState<string | null>(null);
     const [movingBottleId, setMovingBottleId] = useState<string | null>(null);
     const [consumingBottleId, setConsumingBottleId] = useState<string | null>(null);
+    const [orbitEnabled, setOrbitEnabled] = useState(true);
 
     const getWine = useInventoryStore(state => state.getWine);
     const bottles = useInventoryStore(state => state.bottles);
@@ -190,12 +191,13 @@ const Cellar3D: React.FC = () => {
                                         unit={unit}
                                         position={pos}
                                         onBottleClick={setSelectedBottleId}
+                                        onDragStateChange={(isDragging) => setOrbitEnabled(!isDragging)}
                                     />
                                 );
                             })}
                         </group>
 
-                        <OrbitControls makeDefault minPolarAngle={0} maxPolarAngle={Math.PI / 1.75} />
+                        <OrbitControls makeDefault minPolarAngle={0} maxPolarAngle={Math.PI / 1.75} enabled={orbitEnabled} />
                     </Suspense>
                 </Canvas>
             </div>

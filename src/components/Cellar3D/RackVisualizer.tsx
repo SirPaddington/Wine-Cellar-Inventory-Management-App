@@ -8,14 +8,15 @@ interface RackVisualizerProps {
     unit: StorageUnit;
     position: [number, number, number];
     onBottleClick?: (bottleId: string) => void;
+    onDragStateChange?: (dragging: boolean) => void;
 }
 
-export const RackVisualizer: React.FC<RackVisualizerProps> = ({ unit, position, onBottleClick }) => {
-    // Generate grid slots
+export const RackVisualizer: React.FC<RackVisualizerProps> = ({ unit, position, onBottleClick, onDragStateChange }) => {
     const width = unit.dimensions?.width || 1;
     const height = unit.dimensions?.height || 1;
     const depth = unit.dimensions?.depth || 1;
     const bottles = useInventoryStore(state => state.bottles);
+    const updateBottle = useInventoryStore(state => state.updateBottle);
 
     // Simple rack geometry generation
     // We visualize the "Structure" as a wireframe or thin boxes? 
@@ -30,6 +31,32 @@ export const RackVisualizer: React.FC<RackVisualizerProps> = ({ unit, position, 
     const rackW = width * cellWidth;
     const rackH = height * cellHeight;
     const rackD = depth * cellDepth;
+
+    const handleBottleFinishDrag = (bottleId: string, newX: number, newY: number) => {
+        // Validation:
+        // 1. Within bounds
+        if (newX < 0 || newX >= width || newY < 0 || newY >= height) {
+            console.warn('Drag out of bounds', newX, newY);
+            return;
+        }
+
+        // 2. Slot empty?
+        const isOccupied = bottles.some(b =>
+            b.locationId === unit.id &&
+            b.id !== bottleId &&
+            b.x === newX &&
+            b.y === newY
+        );
+
+        if (isOccupied) {
+            console.warn('Slot occupied', newX, newY);
+            // Optional: Swap logic? For now, just reject.
+            return;
+        }
+
+        // Update
+        updateBottle(bottleId, { x: newX, y: newY });
+    };
 
     return (
         <group position={position}>
@@ -98,6 +125,12 @@ export const RackVisualizer: React.FC<RackVisualizerProps> = ({ unit, position, 
                             bottle={bottle}
                             position={[posX, posY, posZ]}
                             onClick={() => onBottleClick?.(bottle.id)}
+
+                            // Drag props
+                            cellWidth={cellWidth}
+                            cellHeight={cellHeight}
+                            onDragStateChange={onDragStateChange}
+                            onFinishDrag={(newX, newY) => handleBottleFinishDrag(bottle.id, newX, newY)}
                         />
                     );
                 })
